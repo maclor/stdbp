@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import pl.qualityexcites.workshop.stdbp.pages.LoginPage;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,26 +15,23 @@ import static org.junit.Assert.*;
 
 public class LoginTest {
     private WebDriver driver;
-    private String baseUrl;
     private StringBuffer verificationErrors = new StringBuffer();
+    private LoginPage loginPage;
 
     @Before
     public void setUp() throws Exception {
         driver = new FirefoxDriver();
-        baseUrl = "http://automationpractice.com/";
+        String baseUrl = "http://automationpractice.com/";
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+
+        loginPage = new LoginPage(driver, baseUrl);
     }
 
     @Test
     public void validLoginLogoutTest() {
-        driver.get(baseUrl + "/index.php?controller=authentication&back=my-account");
+        loginPage.open();
+        loginPage.login("maciej.lorenc@gmail.com", "password");
 
-        driver.findElement(By.id("email")).click();
-        driver.findElement(By.id("email")).clear();
-        driver.findElement(By.id("email")).sendKeys("maciej.lorenc@gmail.com");
-        driver.findElement(By.id("passwd")).clear();
-        driver.findElement(By.id("passwd")).sendKeys("password");
-        driver.findElement(By.id("SubmitLogin")).click();
         assertEquals("Welcome to your account. Here you can manage all of your personal information and orders.", driver.findElement(By.cssSelector("p.info-account")).getText());
 
         driver.findElement(By.linkText("Sign out")).click();
@@ -43,32 +41,16 @@ public class LoginTest {
 
     @Test
     public void invalidLoginWrongPasswordTest() {
-        driver.get(baseUrl + "/index.php?controller=authentication&back=my-account");
-
-        driver.findElement(By.id("email")).click();
-        driver.findElement(By.id("email")).clear();
-        driver.findElement(By.id("email")).sendKeys("maciej.lorenc@gmail.com");
-
-        driver.findElement(By.id("passwd")).clear();
-        driver.findElement(By.id("passwd")).sendKeys("password1");
-
-        driver.findElement(By.id("SubmitLogin")).click();
+        loginPage.open();
+        loginPage.login("maciej.lorenc@gmail.com", "passwordA");
 
         assertEquals("Authentication failed.", driver.findElement(By.cssSelector("ol > li")).getText());
     }
 
     @Test
     public void invalidLoginWrongLoginTest() {
-        driver.get(baseUrl + "/index.php?controller=authentication&back=my-account");
-
-        driver.findElement(By.id("passwd")).click();
-        driver.findElement(By.id("passwd")).clear();
-        driver.findElement(By.id("passwd")).sendKeys("password");
-
-        driver.findElement(By.id("email")).clear();
-        driver.findElement(By.id("email")).sendKeys("maciej.lorenc@gmail.coma");
-
-        driver.findElement(By.id("SubmitLogin")).click();
+        loginPage.open();
+        loginPage.login("maciej.lorenc@gmail.comA", "password");
 
         assertEquals("Authentication failed.", driver.findElement(By.cssSelector("ol > li")).getText());
     }
