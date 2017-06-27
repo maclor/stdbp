@@ -18,7 +18,7 @@ public class LoginPage {
 
     public LoginPage(WebDriver driver, String baseUrl) {
         this.driver = driver;
-        this.url = baseUrl + "/index.php?id_category=8&controller=category";
+        this.url = baseUrl + "/index.php?controller=authentication&back=my-account";
     }
 
     public void open() {
