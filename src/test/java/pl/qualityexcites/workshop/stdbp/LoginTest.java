@@ -26,8 +26,8 @@ public class LoginTest {
 
     @Test
     public void validLoginLogoutTest() {
-        driver.get(baseUrl + "/index.php?id_category=5&controller=category");
-        driver.findElement(By.linkText("Sign in")).click();
+        driver.get(baseUrl + "/index.php?controller=authentication&back=my-account");
+
         driver.findElement(By.id("email")).click();
         driver.findElement(By.id("email")).clear();
         driver.findElement(By.id("email")).sendKeys("maciej.lorenc@gmail.com");
@@ -43,7 +43,7 @@ public class LoginTest {
 
     @Test
     public void invalidLoginWrongPasswordTest() {
-        driver.get(baseUrl + "/index.php?id_category=5&controller=category");
+        driver.get(baseUrl + "/index.php?controller=authentication&back=my-account");
 
         driver.findElement(By.id("email")).click();
         driver.findElement(By.id("email")).clear();
@@ -59,7 +59,7 @@ public class LoginTest {
 
     @Test
     public void invalidLoginWrongLoginTest() {
-        driver.get(baseUrl + "/index.php?id_category=5&controller=category");
+        driver.get(baseUrl + "/index.php?controller=authentication&back=my-account");
 
         driver.findElement(By.id("passwd")).click();
         driver.findElement(By.id("passwd")).clear();
