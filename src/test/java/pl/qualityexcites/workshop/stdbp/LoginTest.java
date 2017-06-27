@@ -25,7 +25,7 @@ public class LoginTest {
     }
 
     @Test
-    public void testLogin() throws Exception {
+    public void validLoginLogoutTest() {
         driver.get(baseUrl + "/index.php?id_category=5&controller=category");
         driver.findElement(By.linkText("Sign in")).click();
         driver.findElement(By.id("email")).click();
@@ -35,27 +35,46 @@ public class LoginTest {
         driver.findElement(By.id("passwd")).sendKeys("password");
         driver.findElement(By.id("SubmitLogin")).click();
         assertEquals("Welcome to your account. Here you can manage all of your personal information and orders.", driver.findElement(By.cssSelector("p.info-account")).getText());
+
         driver.findElement(By.linkText("Sign out")).click();
         assertEquals("Login - My Store", driver.getTitle());
         assertTrue(isElementPresent(By.linkText("Sign in")));
+    }
+
+    @Test
+    public void invalidLoginWrongPasswordTest() {
+        driver.get(baseUrl + "/index.php?id_category=5&controller=category");
+
         driver.findElement(By.id("email")).click();
         driver.findElement(By.id("email")).clear();
         driver.findElement(By.id("email")).sendKeys("maciej.lorenc@gmail.com");
+
         driver.findElement(By.id("passwd")).clear();
         driver.findElement(By.id("passwd")).sendKeys("password1");
+
         driver.findElement(By.id("SubmitLogin")).click();
+
         assertEquals("Authentication failed.", driver.findElement(By.cssSelector("ol > li")).getText());
+    }
+
+    @Test
+    public void invalidLoginWrongLoginTest() {
+        driver.get(baseUrl + "/index.php?id_category=5&controller=category");
+
         driver.findElement(By.id("passwd")).click();
         driver.findElement(By.id("passwd")).clear();
         driver.findElement(By.id("passwd")).sendKeys("password");
+
         driver.findElement(By.id("email")).clear();
         driver.findElement(By.id("email")).sendKeys("maciej.lorenc@gmail.coma");
+
         driver.findElement(By.id("SubmitLogin")).click();
+
         assertEquals("Authentication failed.", driver.findElement(By.cssSelector("ol > li")).getText());
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         driver.quit();
         String verificationErrorString = verificationErrors.toString();
         if (!"".equals(verificationErrorString)) {
