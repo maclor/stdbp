@@ -11,11 +11,13 @@ import pl.qualityexcites.workshop.stdbp.pages.LoginPage;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 
 public class LoginTest {
     private WebDriver driver;
-    private StringBuffer verificationErrors = new StringBuffer();
     private LoginPage loginPage;
 
     @Before
@@ -44,7 +46,7 @@ public class LoginTest {
         loginPage.open();
         loginPage.login("maciej.lorenc@gmail.com", "passwordA");
 
-        assertEquals("Authentication failed.", driver.findElement(By.cssSelector("ol > li")).getText());
+        assertThat(loginPage.getErrorMessages()).contains("Authentication failed.");
     }
 
     @Test
@@ -52,16 +54,12 @@ public class LoginTest {
         loginPage.open();
         loginPage.login("maciej.lorenc@gmail.comA", "password");
 
-        assertEquals("Authentication failed.", driver.findElement(By.cssSelector("ol > li")).getText());
+        assertThat(loginPage.getErrorMessages()).contains("Authentication failed.");
     }
 
     @After
     public void tearDown() {
         driver.quit();
-        String verificationErrorString = verificationErrors.toString();
-        if (!"".equals(verificationErrorString)) {
-            fail(verificationErrorString);
-        }
     }
 
     private boolean isElementPresent(By by) {
