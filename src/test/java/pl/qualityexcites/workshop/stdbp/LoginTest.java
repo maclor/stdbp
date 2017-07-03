@@ -8,7 +8,9 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import pl.qualityexcites.workshop.stdbp.pages.LoginPage;
+import pl.qualityexcites.workshop.stdbp.pages.MyAccountPage;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,9 +34,9 @@ public class LoginTest {
     @Test
     public void validLoginLogoutTest() {
         loginPage.open();
-        loginPage.login("maciej.lorenc@gmail.com", "password");
+        MyAccountPage myAccountPage = loginPage.login("maciej.lorenc@gmail.com", "password");
 
-        assertEquals("Welcome to your account. Here you can manage all of your personal information and orders.", driver.findElement(By.cssSelector("p.info-account")).getText());
+        assertThat(myAccountPage.isPageVisible()).isTrue();
 
         driver.findElement(By.linkText("Sign out")).click();
         assertEquals("Login - My Store", driver.getTitle());
@@ -44,17 +46,17 @@ public class LoginTest {
     @Test
     public void invalidLoginWrongPasswordTest() {
         loginPage.open();
-        loginPage.login("maciej.lorenc@gmail.com", "passwordA");
+        List<String> errors = loginPage.tryLogin("maciej.lorenc@gmail.com", "passwordA");
 
-        assertThat(loginPage.getErrorMessages()).contains("Authentication failed.");
+        assertThat(errors).contains("Authentication failed.");
     }
 
     @Test
     public void invalidLoginWrongLoginTest() {
         loginPage.open();
-        loginPage.login("maciej.lorenc@gmail.comA", "password");
+        List<String> errors = loginPage.tryLogin("maciej.lorenc@gmail.comA", "password");
 
-        assertThat(loginPage.getErrorMessages()).contains("Authentication failed.");
+        assertThat(errors).contains("Authentication failed.");
     }
 
     @After

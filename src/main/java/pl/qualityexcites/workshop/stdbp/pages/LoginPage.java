@@ -61,7 +61,17 @@ public class LoginPage {
 
     // BUSINESS METHODS
 
-    public void login(String email, String password) {
+    public MyAccountPage login(String email, String password) {
+        performLogin(email, password);
+        return new MyAccountPage(driver);
+    }
+
+    public List<String> tryLogin(String email, String password) {
+        performLogin(email, password);
+        return getErrorMessages();
+    }
+
+    private void performLogin(String email, String password) {
         enterEmail(email);
         enterPassword(password);
         submitLoginForm();
