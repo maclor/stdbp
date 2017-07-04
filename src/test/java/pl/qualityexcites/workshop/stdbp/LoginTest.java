@@ -1,34 +1,20 @@
 package pl.qualityexcites.workshop.stdbp;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import pl.qualityexcites.workshop.stdbp.pages.LoginPage;
 import pl.qualityexcites.workshop.stdbp.pages.MyAccountPage;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class LoginTest {
-    private WebDriver driver;
-    private LoginPage loginPage;
+public class LoginTest extends BaseTest {
 
-    @Before
-    public void setUp() throws Exception {
-        driver = new FirefoxDriver();
-        String baseUrl = "http://automationpractice.com/";
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
-        loginPage = new LoginPage(driver, baseUrl);
-    }
 
     @Test
     public void validLoginLogoutTest() {
+        LoginPage loginPage = new LoginPage(getDriver(), getBaseUrl());
         loginPage.open();
         MyAccountPage myAccountPage = loginPage.login("maciej.lorenc@gmail.com", "password");
 
@@ -40,6 +26,7 @@ public class LoginTest {
 
     @Test
     public void invalidLoginWrongPasswordTest() {
+        LoginPage loginPage = new LoginPage(getDriver(), getBaseUrl());
         loginPage.open();
         List<String> errors = loginPage.tryLogin("maciej.lorenc@gmail.com", "passwordA");
 
@@ -48,15 +35,10 @@ public class LoginTest {
 
     @Test
     public void invalidLoginWrongLoginTest() {
+        LoginPage loginPage = new LoginPage(getDriver(), getBaseUrl());
         loginPage.open();
         List<String> errors = loginPage.tryLogin("maciej.lorenc@gmail.comA", "password");
 
         assertThat(errors).contains("Authentication failed.");
     }
-
-    @After
-    public void tearDown() {
-        driver.quit();
-    }
-
 }
