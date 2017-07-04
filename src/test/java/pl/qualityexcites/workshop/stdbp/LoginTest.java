@@ -3,8 +3,6 @@ package pl.qualityexcites.workshop.stdbp;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import pl.qualityexcites.workshop.stdbp.pages.LoginPage;
@@ -59,15 +57,6 @@ public class LoginTest {
     @After
     public void tearDown() {
         driver.quit();
-    }
-
-    private boolean isElementPresent(By by) {
-        try {
-            driver.findElement(by);
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
-        }
     }
 
 }
