@@ -13,16 +13,23 @@ import java.util.List;
 public class LoginPage {
 
     private final WebDriver driver;
-    private final String url;
+    private String url;
+
+    private final String PAGE_TITLE = "Login - My Store";
 
     private By emailInputBy = By.id("email");
     private By passwordInputBy = By.id("passwd");
     private By submitLoginFormButtonBy = By.id("SubmitLogin");
     private By errorMessageBy = By.cssSelector(".alert-danger li");
+    private By loginLinkBy = By.linkText("Sign in");
 
     public LoginPage(WebDriver driver, String baseUrl) {
         this.driver = driver;
         this.url = baseUrl + "/index.php?controller=authentication&back=my-account";
+    }
+
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
     }
 
     public void open() {
@@ -59,6 +66,14 @@ public class LoginPage {
         return errorMessages;
     }
 
+    public String getSiteTitle() {
+        return driver.getTitle();
+    }
+
+    public boolean isLoginLinkVisible() {
+        return driver.findElement(loginLinkBy).isDisplayed();
+    }
+
     // BUSINESS METHODS
 
     public MyAccountPage login(String email, String password) {
@@ -75,5 +90,9 @@ public class LoginPage {
         enterEmail(email);
         enterPassword(password);
         submitLoginForm();
+    }
+
+    public boolean isPageVisible() {
+        return getSiteTitle().equals(PAGE_TITLE) && isLoginLinkVisible();
     }
 }

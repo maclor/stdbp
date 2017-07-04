@@ -13,6 +13,7 @@ public class MyAccountPage {
     private final WebDriver driver;
     private final String WELCOME_MESSAGE = "Welcome to your account. Here you can manage all of your personal information and orders.";
     private By welcomeMessageBy = By.cssSelector("p.info-account");
+    private By logoutBy = By.linkText("Sign out");
 
     public MyAccountPage(WebDriver driver) {
         this.driver = driver;
@@ -25,5 +26,10 @@ public class MyAccountPage {
         } catch (NoSuchElementException ex) {
             return false;
         }
+    }
+
+    public LoginPage logout() {
+        driver.findElement(logoutBy).click();
+        return new LoginPage(driver);
     }
 }

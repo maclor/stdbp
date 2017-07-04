@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 
 public class LoginTest {
@@ -38,9 +36,8 @@ public class LoginTest {
 
         assertThat(myAccountPage.isPageVisible()).isTrue();
 
-        driver.findElement(By.linkText("Sign out")).click();
-        assertEquals("Login - My Store", driver.getTitle());
-        assertTrue(isElementPresent(By.linkText("Sign in")));
+        loginPage = myAccountPage.logout();
+        assertThat(loginPage.isPageVisible()).isTrue();
     }
 
     @Test
