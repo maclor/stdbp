@@ -5,18 +5,16 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import pl.qualityexcites.workshop.stdbp.domain.Product;
 
-import static java.util.Objects.isNull;
-
 
 /**
  * Created by mlo on 05.07.2017.
  */
 public class ProductBuilder {
 
-    private static By nameBy = By.xpath("//*[@itemprop='name']");
-    private static By priceBy = By.xpath("//*[contains(@class,'right-block')]//*[@itemprop='price']");
-    private static By fullPriceBy = By.cssSelector(".old-price");
-    private static By discountBy = By.cssSelector(".price-percent-reduction");
+    private static By nameBy = By.xpath(".//*[@itemprop='name']");
+    private static By priceBy = By.xpath(".//*[contains(@class,'right-block')]//*[@itemprop='price']");
+    private static By fullPriceBy = By.cssSelector(".right-block .old-price");
+    private static By discountBy = By.cssSelector(".right-block .price-percent-reduction");
 
     public static Product buildProductFromHtml(WebElement productElement) {
         Product product = new Product();
@@ -24,14 +22,10 @@ public class ProductBuilder {
         product.setName(getName(productElement));
         product.setPrice(getPrice(productElement));
         Float fullPrice = getFullPrice(productElement);
-        if (!isNull(fullPrice)) {
-            product.setFullPrice(fullPrice);
-        }
+        product.setFullPrice(fullPrice);
 
         Integer discount = getDiscount(productElement);
-        if (!isNull(discount)) {
-            product.setDiscount(discount);
-        }
+        product.setDiscount(discount);
 
         return product;
     }
