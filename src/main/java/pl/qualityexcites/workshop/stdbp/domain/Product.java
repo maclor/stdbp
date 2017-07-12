@@ -1,5 +1,9 @@
 package pl.qualityexcites.workshop.stdbp.domain;
 
+import pl.qualityexcites.workshop.stdbp.helpers.Color;
+
+import java.util.List;
+
 /**
  * Created by mlo on 05.07.2017.
  */
@@ -8,6 +12,7 @@ public class Product {
     private Float price;
     private Float fullPrice;
     private Integer discount;
+    private List<Color> availableColors;
 
     public String getName() {
         return name;
@@ -41,6 +46,14 @@ public class Product {
         this.discount = discount;
     }
 
+    public List<Color> getAvailableColors() {
+        return availableColors;
+    }
+
+    public void setAvailableColors(List<Color> availableColors) {
+        this.availableColors = availableColors;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -48,19 +61,21 @@ public class Product {
 
         Product product = (Product) o;
 
-        if (!name.equals(product.name)) return false;
+        if (name != null ? !name.equals(product.name) : product.name != null) return false;
         if (price != null ? !price.equals(product.price) : product.price != null) return false;
         if (fullPrice != null ? !fullPrice.equals(product.fullPrice) : product.fullPrice != null) return false;
-        return !(discount != null ? !discount.equals(product.discount) : product.discount != null);
+        if (discount != null ? !discount.equals(product.discount) : product.discount != null) return false;
+        return !(availableColors != null ? !availableColors.equals(product.availableColors) : product.availableColors != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
+        int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (fullPrice != null ? fullPrice.hashCode() : 0);
         result = 31 * result + (discount != null ? discount.hashCode() : 0);
+        result = 31 * result + (availableColors != null ? availableColors.hashCode() : 0);
         return result;
     }
 
@@ -71,6 +86,7 @@ public class Product {
                 ", price=" + price +
                 ", fullPrice=" + fullPrice +
                 ", discount=" + discount +
+                ", availableColors=" + availableColors +
                 '}';
     }
 }

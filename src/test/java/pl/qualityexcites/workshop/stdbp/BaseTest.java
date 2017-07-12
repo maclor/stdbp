@@ -25,7 +25,8 @@ public abstract class BaseTest {
 
     @Before
     public void setUp() {
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().window().maximize();
     }
 
     @After

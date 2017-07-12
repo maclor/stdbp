@@ -1,38 +1,32 @@
 package pl.qualityexcites.workshop.stdbp;
 
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import pl.qualityexcites.workshop.stdbp.domain.Category;
+import pl.qualityexcites.workshop.stdbp.domain.Product;
+import pl.qualityexcites.workshop.stdbp.helpers.Color;
 import pl.qualityexcites.workshop.stdbp.pages.CategoryPage;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FilterTest extends BaseTest {
 
     @Test
-    public void testFilter() throws Exception {
+    public void testFilterProductsByColor() throws Exception {
         CategoryPage categoryPage = new CategoryPage(getDriver(), getBaseUrl());
         categoryPage.open(Category.DRESSES);
 
-        assertEquals("There are 5 products.", getDriver().findElement(By.cssSelector("span.heading-counter")).getText());
-        getDriver().findElement(By.id("layered_id_attribute_group_16")).click();
-        assertEquals("There are 3 products.", getDriver().findElement(By.cssSelector("span.heading-counter > span.heading-counter")).getText());
-        assertTrue(isElementPresent(By.id("color_19")));
-        assertTrue(isElementPresent(By.id("color_31")));
-        assertTrue(isElementPresent(By.id("color_34")));
-        getDriver().findElement(By.cssSelector("i.icon-remove")).click();
-        assertEquals("There are 5 products.", getDriver().findElement(By.cssSelector("span.heading-counter > span.heading-counter")).getText());
-    }
+        List<Product> productsBeforeFiltering = categoryPage.getProducts();
 
-    private boolean isElementPresent(By by) {
-        try {
-            getDriver().findElement(by);
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
+        categoryPage.getFilterBox().filterByColor(Color.YELLOW);
+
+        List<Product> productsAfterFiltering = categoryPage.getProducts();
+
+        assertThat(productsAfterFiltering.size()).isLessThanOrEqualTo(productsBeforeFiltering.size());
+        for (Product product : productsAfterFiltering) {
+            assertThat(product.getAvailableColors()).contains(Color.YELLOW);
         }
-    }
 
+    }
 }

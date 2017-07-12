@@ -4,6 +4,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import pl.qualityexcites.workshop.stdbp.domain.Product;
+import pl.qualityexcites.workshop.stdbp.helpers.Color;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Objects.isNull;
 
 
 /**
@@ -15,6 +21,7 @@ public class ProductBuilder {
     private static By priceBy = By.xpath(".//*[contains(@class,'right-block')]//*[@itemprop='price']");
     private static By fullPriceBy = By.cssSelector(".right-block .old-price");
     private static By discountBy = By.cssSelector(".right-block .price-percent-reduction");
+    private static By colorBy = By.className("color_pick");
 
     public static Product buildProductFromHtml(WebElement productElement) {
         Product product = new Product();
@@ -26,6 +33,11 @@ public class ProductBuilder {
 
         Integer discount = getDiscount(productElement);
         product.setDiscount(discount);
+
+        List<Color> colors = getColors(productElement);
+        if (!isNull(colors) || !colors.isEmpty()) {
+            product.setAvailableColors(colors);
+        }
 
         return product;
     }
@@ -59,5 +71,19 @@ public class ProductBuilder {
 
     private static String getName(WebElement productElement) {
         return productElement.findElement(nameBy).getText();
+    }
+
+    private static List<Color> getColors(WebElement productElement) {
+        List<Color> colorsList = new ArrayList<>();
+
+        for (WebElement colorPicker : productElement.findElements(colorBy)) {
+            String rgb = colorPicker.getCssValue("background-color").replace("rgb", "").replace(" ", "").trim();
+            Color color = Color.getColorForRgb(rgb);
+            if (!isNull(color)) {
+                colorsList.add(color);
+            }
+        }
+
+        return colorsList;
     }
 }
