@@ -9,9 +9,9 @@ import java.util.List;
  */
 public class Product {
     private String name;
-    private Float price;
-    private Float fullPrice;
-    private Integer discount;
+    private float price;
+    private float fullPrice;
+    private int discount;
     private List<Color> availableColors;
 
     public String getName() {

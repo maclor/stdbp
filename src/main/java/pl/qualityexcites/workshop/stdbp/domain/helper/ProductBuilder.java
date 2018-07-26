@@ -11,10 +11,6 @@ import java.util.List;
 
 import static java.util.Objects.isNull;
 
-
-/**
- * Created by mlo on 05.07.2017.
- */
 public class ProductBuilder {
 
     private static By nameBy = By.xpath(".//*[@itemprop='name']");
@@ -23,7 +19,7 @@ public class ProductBuilder {
     private static By discountBy = By.cssSelector(".right-block .price-percent-reduction");
     private static By colorBy = By.className("color_pick");
 
-    public static Product buildProductFromHtml(WebElement productElement) {
+    public static Product buildProductFromWebElement(WebElement productElement) {
         Product product = new Product();
 
         product.setName(getName(productElement));

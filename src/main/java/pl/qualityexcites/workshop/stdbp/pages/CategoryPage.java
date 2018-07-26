@@ -11,9 +11,6 @@ import pl.qualityexcites.workshop.stdbp.domain.helper.ProductBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by mlo on 05.07.2017.
- */
 public class CategoryPage {
     private final WebDriver driver;
 
@@ -35,7 +32,7 @@ public class CategoryPage {
         List<Product> products = new ArrayList<>();
         List<WebElement> productTileElements = getProductTileElements();
         for (WebElement productElement : productTileElements) {
-            Product product = ProductBuilder.buildProductFromHtml(productElement);
+            Product product = ProductBuilder.buildProductFromWebElement(productElement);
             products.add(product);
         }
         return products;
